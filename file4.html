@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Peace 💜 — From Newton</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    min-height: 100%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: radial-gradient(circle at 50% 30%, #1f1430 0%, #12081e 60%, #06030a 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    padding: 40px 20px;
+    cursor: none;
+  }
+
+  .stage {
+    max-width: 640px;
+    width: 100%;
+    padding: 50px 36px;
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: fadeUp 1s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ff8ab8;
+    background: rgba(255, 77, 141, 0.12);
+    border: 1px solid rgba(255, 77, 141, 0.3);
+    border-radius: 50px;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    margin-bottom: 22px;
+    color: #fff;
+  }
+
+  h1 .accent {
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 500;
+  }
+
+  .apology {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #d8c8e8;
+    margin-bottom: 14px;
+  }
+
+  .apology strong { color: #fff; font-weight: 500; }
+
+  .signature {
+    font-size: 0.95rem;
+    color: #8a7a9a;
+    font-style: italic;
+    margin-top: 8px;
+    margin-bottom: 44px;
+  }
+
+  .question {
+    font-size: 1.1rem;
+    color: #ffc8dd;
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+
+  .btnRow {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .choiceBtn {
+    flex: 1 1 200px;
+    max-width: 260px;
+    padding: 20px 28px;
+    font-size: 1.08rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    cursor: none;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .choiceBtn.love {
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b);
+    box-shadow: 0 10px 30px rgba(255, 77, 141, 0.4);
+  }
+
+  .choiceBtn.project {
+    background: linear-gradient(135deg, #6a5acd, #4a90d9);
+    box-shadow: 0 10px 30px rgba(106, 90, 205, 0.4);
+  }
+
+  .choiceBtn:hover { transform: translateY(-3px) scale(1.03); }
+  .choiceBtn.love:hover    { box-shadow: 0 14px 44px rgba(255, 77, 141, 0.7); }
+  .choiceBtn.project:hover { box-shadow: 0 14px 44px rgba(106, 90, 205, 0.7); }
+
+  #reveal {
+    display: none;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  #reveal h2 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b, #ff4d8d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes pop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+
+  #reveal p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #d8c8e8;
+    margin-bottom: 14px;
+  }
+
+  #reveal p.small {
+    font-size: 1rem;
+    color: #ffc8dd;
+    font-style: italic;
+    margin-bottom: 30px;
+  }
+
+  #reveal .finalBtn {
+    display: inline-block;
+    padding: 18px 46px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #fff;
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b);
+    border: none;
+    border-radius: 50px;
+    cursor: none;
+    box-shadow: 0 10px 36px rgba(255, 77, 141, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: 10px;
+  }
+  #reveal .finalBtn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 14px 48px rgba(255, 77, 141, 0.8);
+  }
+
+  #cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 22px; height: 22px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    line-height: 1;
+    text-align: center;
+    filter: drop-shadow(0 0 8px rgba(255, 77, 141, 0.9));
+    transition: transform 0.08s ease-out;
+  }
+
+  .confetti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 1.4rem;
+    animation: confettiFall 3s ease-in forwards;
+  }
+  @keyframes confettiFall {
+    0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(var(--rot)); }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FINAL REVEAL — video loops, song keeps playing, waits for click
+     ═══════════════════════════════════════════════════════════ */
+  #finalReveal {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 4, 18, 0.97);
+    z-index: 100000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    cursor: pointer;
+  }
+  #finalReveal.show { display: flex; }
+
+  #finalReveal .loveBurst {
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(255, 45, 107, 0.95),
+                 0 0 80px rgba(255, 45, 107, 0.6);
+    margin-bottom: 24px;
+    animation: lovePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes lovePop {
+    0%   { transform: scale(0.4); opacity: 0; }
+    60%  { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+
+  #finalReveal video {
+    max-width: 90vw;
+    max-height: 62vh;
+    border-radius: 20px;
+    background: #000;
+    box-shadow: 0 20px 70px rgba(255, 77, 141, 0.6),
+                0 0 0 2px rgba(255, 255, 255, 0.1);
+    animation: imgPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+    outline: none;
+  }
+  @keyframes imgPop {
+    0%   { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+
+  #finalReveal .tapHint {
+    margin-top: 26px;
+    font-size: 1rem;
+    color: #ffc8dd;
+    font-style: italic;
+    letter-spacing: 0.5px;
+    animation: blinkHint 1.6s ease-in-out infinite;
+  }
+  @keyframes blinkHint {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+
+    <div id="introBlock">
+      <span class="tag">A Proper Apology</span>
+
+      <h1>Hey Peace, ....I owe you more than a <span class="accent">silly game.</span></h1>
+
+      <p class="apology">
+        I've been <strong>busy with a lot of work</strong> and a
+        <strong>personal project</strong> that swallowed my time 
+        and I didn't give you the attention you deserve.
+      </p>
+      <p class="apology">
+        That's on me. Not on you. <strong>I'm so, sorry</strong>
+      </p>
+
+      <p class="signature">— yours, always · Newton 💜</p>
+
+      <p class="question">So... will you forgive me?</p>
+
+      <div class="btnRow">
+        <button class="choiceBtn love"    id="btnLove">❤️ I love you too</button>
+        <button class="choiceBtn project" id="btnProject">👀 View project</button>
+      </div>
+    </div>
+
+    <div id="reveal">
+      <h2>You clicked "View Project" 😏</h2>
+      <p class="small">(Also... I love you too, Peace. Now come look at what I made for you.)</p>
+      <button class="finalBtn" id="openProject">Open the project →</button>
+    </div>
+
+  </div>
+
+  <div id="cursor">💜</div>
+
+  <!-- Final reveal: video loops + I LOVE YOU, waits for click -->
+  <div id="finalReveal">
+    <div class="loveBurst">I LOVE YOU ❤️</div>
+    <video id="finalVideo" src="test.mp4" playsinline preload="auto" loop muted></video>
+    <div class="tapHint">tap anywhere to continue →</div>
+  </div>
+
+  <!-- Background song: loops forever -->
+  <audio id="song" src="test3.mp3" preload="auto" loop></audio>
+
+<script>
+  const cursor       = document.getElementById('cursor');
+  const introBlock   = document.getElementById('introBlock');
+  const reveal       = document.getElementById('reveal');
+  const btnLove      = document.getElementById('btnLove');
+  const btnProject   = document.getElementById('btnProject');
+  const openProject  = document.getElementById('openProject');
+  const finalReveal  = document.getElementById('finalReveal');
+  const finalVideo   = document.getElementById('finalVideo');
+  const song         = document.getElementById('song');
+
+  const PROJECT_URL = 'https://ece-software.web.app/';
+
+  // ── Custom cursor ──
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  //  BACKGROUND SONG — starts on first user gesture, plays forever
+  // ═══════════════════════════════════════════════════════════
+  let songStarted = false;
+  function startSong() {
+    if (songStarted) return;
+    songStarted = true;
+    song.volume = 0.55;
+    song.play().catch(e => console.warn('Play failed:', e));
+  }
+  song.play().then(() => { songStarted = true; }).catch(() => {});
+  ['click','touchstart','keydown','mousemove'].forEach(evt => {
+    document.addEventListener(evt, startSong, { once: true, passive: true });
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  //  BUTTONS → reveal screen
+  // ═══════════════════════════════════════════════════════════
+  function showReveal(clickedWhich) {
+    introBlock.style.display = 'none';
+    reveal.style.display = 'block';
+
+    const h2 = reveal.querySelector('h2');
+    if (clickedWhich === 'love') {
+      h2.textContent = 'You clicked "I Love You Too" ❤️';
+      setTimeout(() => {
+        h2.textContent = '...and yet, you still want to see the project 😏';
+      }, 1600);
+    } else {
+      h2.textContent = 'You clicked "View Project" 😏';
+    }
+    burstConfetti();
+  }
+  btnLove.addEventListener('click',    () => showReveal('love'));
+  btnProject.addEventListener('click', () => showReveal('project'));
+
+  // ═══════════════════════════════════════════════════════════
+  //  FINAL BUTTON → show overlay + loop video, keep song playing
+  // ═══════════════════════════════════════════════════════════
+  openProject.addEventListener('click', () => {
+    finalReveal.classList.add('show');
+    burstConfetti();
+
+    // 🎵 Song keeps playing — resume if it somehow stopped
+    if (song.paused) song.play().catch(() => {});
+
+    // 🎥 Video is muted (declared on the tag), loops (attribute),
+    //    and we just need to kick off playback
+    finalVideo.currentTime = 0;
+    finalVideo.play().catch(e => console.warn('Video play failed:', e));
+
+    // One-time click on the overlay → go to project
+    const goToProject = () => {
+      finalReveal.removeEventListener('click', goToProject);
+      try { finalVideo.pause(); } catch (e) {}
+      window.location.href = PROJECT_URL;
+    };
+    setTimeout(() => {
+      finalReveal.addEventListener('click', goToProject);
+    }, 400);
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  //  CONFETTI
+  // ═══════════════════════════════════════════════════════════
+  function burstConfetti() {
+    const emojis = ['❤️', '💕', '💖', '💜', '💗', '💓'];
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        c.style.left = (Math.random() * 100) + 'vw';
+        c.style.top  = (-10 - Math.random() * 20) + 'vh';
+        c.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+        c.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 3200);
+      }, i * 80);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Chasing This 💕</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: radial-gradient(circle at 50% 40%, #2a1a3a 0%, #1a0f28 60%, #0a0510 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    cursor: none;
+  }
+
+  .stage {
+    max-width: 620px;
+    padding: 40px 30px;
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    line-height: 1.4;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.3s forwards;
+  }
+
+  h1 .emoji {
+    display: inline-block;
+    animation: wobble 2.5s ease-in-out infinite;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-8deg); }
+    50%      { transform: rotate(8deg); }
+  }
+
+  .sub {
+    font-size: 1.1rem;
+    color: #d8b8e8;
+    margin-bottom: 50px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.7s forwards;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 18px 44px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #fff;
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b);
+    border: none;
+    border-radius: 50px;
+    cursor: none;
+    box-shadow: 0 8px 30px rgba(255, 77, 141, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.1s forwards;
+    position: relative;
+    z-index: 5;
+  }
+  .btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(255, 77, 141, 0.7);
+  }
+
+  #cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    line-height: 1;
+    text-align: center;
+    filter: drop-shadow(0 0 8px rgba(255, 77, 141, 0.9));
+    transition: transform 0.08s ease-out;
+  }
+
+  .trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 1rem;
+    opacity: 0.9;
+    animation: trailFloat 1.4s ease-out forwards;
+    will-change: transform, opacity;
+  }
+
+  @keyframes trailFloat {
+    0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    100% { opacity: 0;   transform: translate(-50%, -50%) scale(0.2) rotate(var(--rot)) translateY(-60px); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9997;
+    font-size: 1.4rem;
+    animation: burstOut 0.9s ease-out forwards;
+  }
+
+  @keyframes burstOut {
+    0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.4); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1.3); }
+  }
+
+  #final {
+    display: none;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+  }
+  #final h1 { opacity: 1; animation: none; }
+  #final .big {
+    font-size: 3rem;
+    display: block;
+    margin: 20px 0;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.12); }
+  }
+
+  #tapHint {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 5, 16, 0.85);
+    z-index: 10000;
+    font-size: 1.2rem;
+    color: #ffc8dd;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.5s ease;
+  }
+  #tapHint.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #musicState {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    color: #d8b8e8;
+    background: rgba(30, 15, 45, 0.7);
+    border: 1px solid rgba(255, 77, 141, 0.4);
+    border-radius: 30px;
+    z-index: 100;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+    pointer-events: none;
+  }
+  #musicState.playing {
+    color: #fff;
+    background: rgba(255, 77, 141, 0.35);
+    border-color: #ff4d8d;
+    box-shadow: 0 0 20px rgba(255, 77, 141, 0.6);
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div id="intro">
+      <h1>You make it so easy ... <span class="emoji">😏</span></h1>
+      <p class="sub">....<br>Move your mouse — the music follows you. 💕</p>
+      <button class="btn" id="nextBtn">Keep Going →</button>
+    </div>
+
+    <div id="final">
+      <h1>Good. Keep that feeling.</h1>
+      <span class="big">💕</span>
+      <p class="sub">Because the next part is a little... different. Ready?</p>
+    </div>
+  </div>
+
+  <div id="cursor">💖</div>
+  <div id="musicState">♪ paused</div>
+  <div id="tapHint">Tap anywhere to begin 💕</div>
+
+  <!-- Song: NO loop, so `ended` fires once and we can navigate -->
+  <audio id="song" src="test2.mp3" preload="auto"></audio>
+
+<script>
+  const cursor     = document.getElementById('cursor');
+  const intro      = document.getElementById('intro');
+  const finalEl    = document.getElementById('final');
+  const nextBtn    = document.getElementById('nextBtn');
+  const song       = document.getElementById('song');
+  const tapHint    = document.getElementById('tapHint');
+  const musicState = document.getElementById('musicState');
+
+  // ═════════════════════════════════════════════════════════
+  //  STATE FLAGS
+  // ═════════════════════════════════════════════════════════
+  let audioReady = false;     // user unlocked audio
+  let isPlaying  = false;
+  let songFinished = false;   // 🚫 stops trail from touching audio after end
+  let pauseTimer = null;
+  const PAUSE_DELAY = 180;
+  const NEXT_PAGE   = 'file3.html';
+
+  song.volume = 0.7;
+
+  // ─── Unlock audio on first user gesture ─────────────────
+  function unlockAudio() {
+    if (audioReady) return;
+    audioReady = true;
+    tapHint.classList.add('hidden');
+    song.play().then(() => {
+      song.pause();
+      song.currentTime = 0;
+    }).catch(() => {});
+  }
+  document.addEventListener('click',      unlockAudio);
+  document.addEventListener('touchstart', unlockAudio, { passive: true });
+  document.addEventListener('mousemove',  unlockAudio);
+  document.addEventListener('keydown',    unlockAudio);
+  tapHint.addEventListener('click',       unlockAudio);
+  tapHint.addEventListener('touchstart',  unlockAudio, { passive: true });
+
+  // ─── Play / pause driven by movement ────────────────────
+  function startPlaying() {
+    if (!audioReady) return;
+    if (songFinished) return;   // 🚫 dead after song ends
+    if (isPlaying) return;
+    isPlaying = true;
+    song.play().catch(() => {});
+    musicState.textContent = '♪ playing';
+    musicState.classList.add('playing');
+  }
+
+  function stopPlaying() {
+    if (!isPlaying) return;
+    isPlaying = false;
+    if (!songFinished) song.pause();
+    musicState.textContent = '♪ paused';
+    musicState.classList.remove('playing');
+  }
+
+  function noteMovement() {
+    if (songFinished) return;   // 🚫 ignore trail after song ends
+    startPlaying();
+    clearTimeout(pauseTimer);
+    pauseTimer = setTimeout(stopPlaying, PAUSE_DELAY);
+  }
+
+  // ═════════════════════════════════════════════════════════
+  //  SONG ENDED → kill audio logic → go to file3.html
+  // ═════════════════════════════════════════════════════════
+  song.addEventListener('ended', () => {
+    songFinished = true;
+    isPlaying    = false;
+    clearTimeout(pauseTimer);
+    musicState.textContent = '♪ done';
+    musicState.classList.remove('playing');
+    // Hard-navigate — trail can no longer interfere
+    window.location.href = NEXT_PAGE;
+  });
+
+  // Safety net: if the audio errors out, still advance
+  song.addEventListener('error', () => {
+    console.warn('test2.mp3 failed to load — going to ' + NEXT_PAGE);
+    songFinished = true;
+    window.location.href = NEXT_PAGE;
+  });
+
+  // ═════════════════════════════════════════════════════════
+  //  Trail + cursor
+  // ═════════════════════════════════════════════════════════
+  let lastTrailTime = 0;
+  let lastX = 0, lastY = 0;
+  const TRAIL_DELAY = 28;
+  const heartPool = ['❤️', '💕', '💖', '💗', '💓', '💞'];
+
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+
+    const now = Date.now();
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (now - lastTrailTime > TRAIL_DELAY && dist > 6) {
+      spawnTrail(e.clientX, e.clientY);
+      lastTrailTime = now;
+    }
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+    noteMovement();
+  });
+
+  document.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    cursor.style.left = t.clientX + 'px';
+    cursor.style.top  = t.clientY + 'px';
+
+    const now = Date.now();
+    if (now - lastTrailTime > TRAIL_DELAY) {
+      spawnTrail(t.clientX, t.clientY);
+      lastTrailTime = now;
+    }
+    noteMovement();
+  }, { passive: true });
+
+  function spawnTrail(x, y) {
+    const h = document.createElement('div');
+    h.className = 'trail';
+    h.textContent = heartPool[Math.floor(Math.random() * heartPool.length)];
+    h.style.left = x + 'px';
+    h.style.top  = y + 'px';
+    h.style.fontSize = (0.8 + Math.random() * 0.8) + 'rem';
+    h.style.setProperty('--rot', (Math.random() * 60 - 30) + 'deg');
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1500);
+  }
+
+  // ─── Click burst ────────────────────────────────────────
+  document.addEventListener('click', (e) => {
+    burst(e.clientX, e.clientY);
+  });
+
+  function burst(x, y) {
+    const count = 8;
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 * i) / count;
+      const dist  = 60 + Math.random() * 40;
+      const b = document.createElement('div');
+      b.className = 'burst';
+      b.textContent = heartPool[Math.floor(Math.random() * heartPool.length)];
+      b.style.left = x + 'px';
+      b.style.top  = y + 'px';
+      b.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+      b.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), 1000);
+    }
+  }
+
+  // ─── Next button (manual skip) ──────────────────────────
+  nextBtn.addEventListener('click', () => {
+    songFinished = true;
+    clearTimeout(pauseTimer);
+    song.pause();
+    window.location.href = NEXT_PAGE;
+  });
+
+  window.addEventListener('beforeunload', () => {
+    document.body.style.cursor = 'auto';
+  });
+</script>
+</body>
+</html>

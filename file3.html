@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Love You ❤️</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: radial-gradient(circle at 50% 40%, #2a1a3a 0%, #140a1f 60%, #0a0510 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+  }
+
+  .stage { max-width: 600px; padding: 40px 30px; }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 40px;
+    line-height: 1.4;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.3s forwards;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 18px 44px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #fff;
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(255, 77, 141, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.8s forwards;
+  }
+  .btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(255, 77, 141, 0.6);
+  }
+
+  #flash {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; font-weight: 700; color: #ff2d6b;
+    text-shadow: 0 0 40px rgba(255, 45, 107, 0.9);
+    background: #fff; z-index: 100;
+    opacity: 0; pointer-events: none;
+  }
+  #flash.show { animation: blink 0.5s linear; }
+  @keyframes blink {
+    0%   { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .missed {
+    display: none; opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+  }
+  .missed p {
+    font-size: 1.3rem; line-height: 1.7;
+    margin-bottom: 18px; color: #ffc8dd;
+  }
+  .missed p.small {
+    font-size: 1rem; color: #b89ec9; font-style: italic;
+  }
+
+  .real { display: none; opacity: 0; animation: fadeIn 1.2s ease forwards; }
+  .real .bigLove {
+    font-size: 3.2rem; font-weight: 700;
+    background: linear-gradient(135deg, #ff4d8d, #ff8a5b, #ff4d8d);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin: 20px 0 30px;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .real .note { font-size: 1.1rem; color: #d8b8e8; line-height: 1.7; }
+
+  @keyframes pulse {
+    0%,100% { transform: scale(1);    filter: drop-shadow(0 0 15px rgba(255,77,141,0.5)); }
+    50%     { transform: scale(1.06); filter: drop-shadow(0 0 30px rgba(255,77,141,0.9)); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .heart {
+    position: fixed; font-size: 1.5rem; pointer-events: none; z-index: 90;
+    animation: floatUp 2.5s ease-out forwards;
+  }
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), -300px) scale(0.3); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+
+    <!-- STEP 1 -->
+    <div id="step1">
+      <h1>One last thing...</h1>
+      <button class="btn" id="clickHere">Click Here</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="missed" id="missed">
+      <p>...you blinked and missed it? Typical. 😏</p>
+      <p class="small">Okay, real one. No tricks this time.</p>
+      <button class="btn" id="realOne" style="margin-top:20px; opacity:1; animation:none;">I Love You ❤️</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="real" id="real">
+      <div class="bigLove">I Love You ❤️</div>
+      <p class="note">In this case nze Yuda ...<br>And I'm really, truly sorry..</p>
+    </div>
+
+  </div>
+
+  <div id="flash">I LOVE YOU ❤️</div>
+
+  <!-- Song: no loop so `ended` fires and we can navigate -->
+  <audio id="song" src="test.mp3" preload="auto"></audio>
+
+<script>
+  const flash    = document.getElementById('flash');
+  const step1    = document.getElementById('step1');
+  const missed   = document.getElementById('missed');
+  const real     = document.getElementById('real');
+  const clickBtn = document.getElementById('clickHere');
+  const realBtn  = document.getElementById('realOne');
+  const song     = document.getElementById('song');
+
+  const NEXT_PAGE = 'file4.html';
+
+  let songFinished = false;
+
+  // ── STEP 1: flash 0.5s → missed screen ──
+  clickBtn.addEventListener('click', () => {
+    flash.classList.add('show');
+    setTimeout(() => {
+      flash.classList.remove('show');
+      step1.style.display = 'none';
+      missed.style.display = 'block';
+    }, 500);
+  });
+
+  // ── STEP 2: play song + reveal real message ──
+  realBtn.addEventListener('click', async () => {
+    try {
+      song.volume = 0.7;
+      song.currentTime = 0;
+      await song.play();
+    } catch (e) {
+      console.warn('Play failed:', e);
+      // If play fails (autoplay blocked / missing file),
+      // still advance so the flow doesn't dead-end
+      setTimeout(() => { window.location.href = NEXT_PAGE; }, 3000);
+    }
+
+    missed.style.display = 'none';
+    real.style.display = 'block';
+    burstHearts();
+  });
+
+  // ── When song ends → file4.html ──
+  song.addEventListener('ended', () => {
+    songFinished = true;
+    window.location.href = NEXT_PAGE;
+  });
+
+  // ── Safety net: if the MP3 is missing/blocked, still move on ──
+  song.addEventListener('error', () => {
+    console.warn('test.mp3 failed — going to ' + NEXT_PAGE);
+    songFinished = true;
+    window.location.href = NEXT_PAGE;
+  });
+
+  // ── Heart burst ──
+  function burstHearts() {
+    const emojis = ['❤️', '💕', '💖', '💗', '💓'];
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        h.style.left = (Math.random() * 100) + 'vw';
+        h.style.top  = (window.innerHeight - 40) + 'px';
+        h.style.setProperty('--dx', (Math.random() * 200 - 100) + 'px');
+        h.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2600);
+      }, i * 60);
+    }
+  }
+</script>
+</body>
+</html>
