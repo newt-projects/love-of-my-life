@@ -157,7 +157,7 @@
     <div id="final">
       <h1>...fine, you win.</h1>
       <span class="heart">💜</span>
-      <p class="sub">You always do. Okay, come with me — there's more.</p>
+      <p class="sub">I'm sorry.</p>
       <button id="nextBtn" style="
         padding: 16px 40px;
         font-size: 1.1rem;
@@ -184,7 +184,7 @@
   const finalEl = document.getElementById('final');
   const emojiEl = document.getElementById('emoji');
 
-  const EMOJIS = ['🥹', '😅', '🥱', '🙂', '🫂'];
+  const EMOJIS = ['🥹', '😅', '🤧', '🙂', '🫂'];
   let emojiIndex = 0;
 
   function cycleEmoji() {
@@ -231,12 +231,12 @@
       setTimeout(() => {
         tired = true;
         runner.classList.add('tired');
-        runner.textContent = 'Okay... Forgive Me 💜';
+        runner.textContent = 'Please, Forgive Me 💜';
 
         runner.style.left = '50%';
         runner.style.top  = '50%';
 
-        taunt.textContent = 'fine... you win 💜';
+        taunt.textContent = '... you win 💜';
       }, 400);
     }
   }
