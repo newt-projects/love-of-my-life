@@ -334,6 +334,11 @@
   const finalVideo   = document.getElementById('finalVideo');
   const song         = document.getElementById('song');
 
+  // ──────────────────────────────────────────────────────────
+  //  PROJECT_URL
+  //  Leave blank  → overlay stays forever, no redirect
+  //  Fill it in   → tap on overlay sends her there
+  // ──────────────────────────────────────────────────────────
   const PROJECT_URL = '';
 
   // ── Custom cursor ──
@@ -388,13 +393,13 @@
     // 🎵 Song keeps playing — resume if it somehow stopped
     if (song.paused) song.play().catch(() => {});
 
-    // 🎥 Video is muted (declared on the tag), loops (attribute),
-    //    and we just need to kick off playback
+    // 🎥 Video is muted + loops; just kick off playback
     finalVideo.currentTime = 0;
     finalVideo.play().catch(e => console.warn('Video play failed:', e));
 
-    // One-time click on the overlay → go to project
+    // Tap on overlay → redirect ONLY if PROJECT_URL is set
     const goToProject = () => {
+      if (!PROJECT_URL || PROJECT_URL.trim() === '') return;  // 👈 stay put
       finalReveal.removeEventListener('click', goToProject);
       try { finalVideo.pause(); } catch (e) {}
       window.location.href = PROJECT_URL;
